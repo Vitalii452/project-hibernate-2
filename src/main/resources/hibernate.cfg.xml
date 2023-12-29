@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/movie</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">452452</property>
+
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <mapping class="com.budiak.model.Actor"/>
+        <mapping class="com.budiak.model.Address"/>
+        <mapping class="com.budiak.model.Category"/>
+        <mapping class="com.budiak.model.City"/>
+        <mapping class="com.budiak.model.Country"/>
+        <mapping class="com.budiak.model.Customer"/>
+        <mapping class="com.budiak.model.Film"/>
+        <mapping class="com.budiak.model.FilmActor"/>
+        <mapping class="com.budiak.model.FilmCategory"/>
+        <mapping class="com.budiak.model.FilmText"/>
+        <mapping class="com.budiak.model.Inventory"/>
+        <mapping class="com.budiak.model.Language"/>
+        <mapping class="com.budiak.model.Payment"/>
+        <mapping class="com.budiak.model.Rental"/>
+        <mapping class="com.budiak.model.Staff"/>
+        <mapping class="com.budiak.model.Store"/>
+    </session-factory>
+</hibernate-configuration>
