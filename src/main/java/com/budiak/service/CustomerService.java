@@ -3,12 +3,17 @@ package com.budiak.service;
 import com.budiak.dao.CustomerDAO;
 import com.budiak.model.Address;
 import com.budiak.model.Customer;
+import com.budiak.service.Exception.ServiceException;
 import com.budiak.util.TransactionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 
 public class CustomerService {
+
+    private static final Logger logger = LogManager.getLogger(CustomerService.class);
 
     private final CustomerDAO customerDAO;
 
@@ -36,13 +41,17 @@ public class CustomerService {
                 );
                 customer.setAddress(address);
 
-                Customer customerInBd = customerDAO.findMatchingAddress(session, customer);
-                if (customerInBd == null) {
+                Customer customerInDb = customerDAO.findMatchingAddress(session, customer);
+                if (customerInDb == null) {
                     customerDAO.save(session, customer);
+                    logger.info("New customer created: " + customer);
+                } else {
+                    logger.info("Customer already exists: " + customerInDb);
                 }
             });
         } catch (Exception e) {
-            // EXCEPTION HANDLING
+            logger.error("Error creating customer: " + e.getMessage(), e);
+            throw new ServiceException("Unable to create customer", e);
         }
     }
 }

@@ -71,7 +71,7 @@ public class FilmCategory {
         public FilmCategoryId() {
         }
 
-        public FilmCategoryId(Short filmId, Byte  categoryId) {
+        public FilmCategoryId(Short filmId, Byte categoryId) {
             this.filmId = filmId;
             this.categoryId = categoryId;
         }
@@ -84,11 +84,11 @@ public class FilmCategory {
             this.filmId = filmId;
         }
 
-        public Byte  getCategoryId() {
+        public Byte getCategoryId() {
             return categoryId;
         }
 
-        public void setCategoryId(Byte  categoryId) {
+        public void setCategoryId(Byte categoryId) {
             this.categoryId = categoryId;
         }
 

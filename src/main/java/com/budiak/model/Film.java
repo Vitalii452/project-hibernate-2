@@ -1,6 +1,5 @@
 package com.budiak.model;
 
-import com.budiak.util.RatingConverter;
 import com.budiak.util.SpecialFeaturesConverter;
 import com.budiak.util.YearConverter;
 import jakarta.persistence.*;

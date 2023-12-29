@@ -3,13 +3,14 @@ package com.budiak.service;
 import com.budiak.dao.AddressDAO;
 import com.budiak.model.Address;
 import com.budiak.model.City;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 public class AddressService {
 
+    private static final Logger logger = LogManager.getLogger(AddressService.class);
     private final AddressDAO addressDAO;
-
     private final CityService cityService;
 
     public AddressService(AddressDAO addressDAO, CityService cityService) {
@@ -18,7 +19,10 @@ public class AddressService {
     }
 
     public Address findOrCreateAddress(Session session, String address, String address2, String district, City city, String postalCode, String phone) {
+        logger.debug("Attempting to find or create an address for: {}", city.getCity());
+
         if (!session.getTransaction().isActive()) {
+            logger.error("Session transaction not active!");
             throw new IllegalStateException("Session transaction required!");
         }
 
@@ -27,9 +31,12 @@ public class AddressService {
         Address addressInDB = addressDAO.findMatchingAddress(session, addressObj);
 
         if (addressInDB == null) {
+            logger.info("Creating a new address in the database");
             addressDAO.save(session, addressObj);
             return addressObj;
         }
+
+        logger.info("Address found in the database");
         return addressInDB;
     }
 }
