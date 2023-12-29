@@ -12,7 +12,7 @@ public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staff_id", nullable = false, updatable = false)
-    private Long staffId;
+    private Byte staffId;
 
     @Column(name = "first_name", length = 45, nullable = false)
     private String firstName;
@@ -25,7 +25,7 @@ public class Staff {
     private Address address;
 
     @Lob
-    @Column(name = "picture")
+    @Column(name = "picture", columnDefinition = "blob")
     private byte[] picture;
 
     @Column(name = "email", length = 50)
@@ -63,7 +63,7 @@ public class Staff {
         this.password = password;
     }
 
-    public Long getStaffId() {
+    public Byte getStaffId() {
         return staffId;
     }
 

@@ -1,6 +1,8 @@
 package com.budiak.model;
 
+import com.budiak.util.RatingConverter;
 import com.budiak.util.SpecialFeaturesConverter;
+import com.budiak.util.YearConverter;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,7 +16,7 @@ public class Film {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "film_id", nullable = false, updatable = false)
-    private Long filmId;
+    private Short filmId;
 
     @Column(name = "title", nullable = false, length = 128)
     private String title;
@@ -23,6 +25,7 @@ public class Film {
     private String description;
 
     @Column(name = "release_year")
+    @Convert(converter = YearConverter.class)
     private Integer releaseYear;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,21 +37,25 @@ public class Film {
     private Language originalLanguage;
 
     @Column(name = "rental_duration", nullable = false)
-    private Short rentalDuration = 3;
+    private Byte rentalDuration = 3;
 
     @Column(name = "rental_rate", nullable = false, precision = 4, scale = 2)
     private BigDecimal rentalRate;
+
     @Column(name = "length")
     private Short length;
+
     @Column(name = "replacement_cost", nullable = false, precision = 5, scale = 2)
     private BigDecimal replacementCost;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "rating")
+    @Column(name = "rating", columnDefinition = "ENUM('G', 'PG', 'PG_13', 'R', 'NC_17')")
     private Rating rating = Rating.G;
-    //Need to add validation in the service that will work with this attribute
+
     @Convert(converter = SpecialFeaturesConverter.class)
     @Column(name = "special_features")
     private String specialFeatures;
+
     @Column(name = "last_update", nullable = false, insertable = false, updatable = false)
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
@@ -56,7 +63,7 @@ public class Film {
     public Film() {
     }
 
-    public Film(String title, String description, Integer releaseYear, Language language, Language originalLanguage, Short rentalDuration, BigDecimal rentalRate, Short length, BigDecimal replacementCost, Rating rating, String specialFeatures) {
+    public Film(String title, String description, Integer releaseYear, Language language, Language originalLanguage, Byte rentalDuration, BigDecimal rentalRate, Short length, BigDecimal replacementCost, Rating rating, String specialFeatures) {
         this.title = title;
         this.description = description;
         this.releaseYear = releaseYear;
@@ -92,7 +99,7 @@ public class Film {
         this.replacementCost = replacementCost;
     }
 
-    public Long getFilmId() {
+    public Short getFilmId() {
         return filmId;
     }
 
@@ -136,11 +143,11 @@ public class Film {
         this.originalLanguage = originalLanguage;
     }
 
-    public Short getRentalDuration() {
+    public Byte getRentalDuration() {
         return rentalDuration;
     }
 
-    public void setRentalDuration(Short rentalDuration) {
+    public void setRentalDuration(Byte rentalDuration) {
         this.rentalDuration = rentalDuration;
     }
 

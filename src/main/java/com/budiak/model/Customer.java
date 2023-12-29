@@ -13,7 +13,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id", nullable = false, updatable = false)
-    private Long customerId;
+    private Short customerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
@@ -55,7 +55,7 @@ public class Customer {
         this.active = active;
     }
 
-    public Long getCustomerId() {
+    public Short getCustomerId() {
         return customerId;
     }
 

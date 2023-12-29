@@ -12,7 +12,7 @@ public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id", nullable = false, updatable = false)
-    private Long storeId;
+    private Byte storeId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_staff_id", nullable = false, referencedColumnName = "staff_id")
@@ -34,7 +34,7 @@ public class Store {
         this.address = address;
     }
 
-    public Long getStoreId() {
+    public Byte getStoreId() {
         return storeId;
     }
 

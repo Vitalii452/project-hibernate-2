@@ -64,32 +64,32 @@ public class FilmActor {
     @Embeddable
     public static class FilmActorId implements Serializable {
 
-        private Long actorId;
+        private Short actorId;
 
-        private Long filmId;
+        private Short filmId;
 
 
         public FilmActorId() {
         }
 
-        public FilmActorId(Long actorId, Long filmId) {
+        public FilmActorId(Short actorId, Short filmId) {
             this.actorId = actorId;
             this.filmId = filmId;
         }
 
-        public Long getActorId() {
+        public Short getActorId() {
             return actorId;
         }
 
-        public void setActorId(Long actorId) {
+        public void setActorId(Short actorId) {
             this.actorId = actorId;
         }
 
-        public Long getFilmId() {
+        public Short getFilmId() {
             return filmId;
         }
 
-        public void setFilmId(Long filmId) {
+        public void setFilmId(Short filmId) {
             this.filmId = filmId;
         }
 

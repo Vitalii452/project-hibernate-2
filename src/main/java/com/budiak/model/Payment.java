@@ -13,7 +13,7 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id", nullable = false, updatable = false)
-    private Long paymentId;
+    private Short paymentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
@@ -47,7 +47,7 @@ public class Payment {
         this.amount = amount;
     }
 
-    public Long getPaymentId() {
+    public Short getPaymentId() {
         return paymentId;
     }
 

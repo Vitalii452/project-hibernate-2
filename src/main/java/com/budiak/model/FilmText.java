@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class FilmText {
 
     @Id
-    private Long filmId;
+    private Short filmId;
 
     @OneToOne
     @MapsId
@@ -29,7 +29,7 @@ public class FilmText {
         this.text = text;
     }
 
-    public Long getFilmId() {
+    public Short getFilmId() {
         return filmId;
     }
 

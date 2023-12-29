@@ -12,7 +12,7 @@ public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inventory_id", nullable = false, updatable = false)
-    private Long inventoryId;
+    private Integer inventoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id", nullable = false)
@@ -34,7 +34,7 @@ public class Inventory {
         this.store = store;
     }
 
-    public Long getInventoryId() {
+    public Integer getInventoryId() {
         return inventoryId;
     }
 

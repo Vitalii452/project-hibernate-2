@@ -12,9 +12,9 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "language_id", nullable = false, updatable = false)
-    private Long languageId;
+    private Byte languageId;
 
-    @Column(name = "name", length = 20, nullable = false)
+    @Column(name = "name", columnDefinition = "char(20)", nullable = false)
     private String name;
 
     @Column(name = "last_update", nullable = false, insertable = false, updatable = false)
@@ -28,7 +28,7 @@ public class Language {
         this.name = name;
     }
 
-    public Long getLanguageId() {
+    public Byte getLanguageId() {
         return languageId;
     }
 

@@ -14,7 +14,7 @@ public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "actor_id", nullable = false, updatable = false)
-    private Long actorId;
+    private Short actorId;
 
     @Column(name = "first_name", nullable = false, length = 45)
     private String firstName;
@@ -39,7 +39,7 @@ public class Actor {
         this.filmActor = filmActor;
     }
 
-    public Long getActorId() {
+    public Short getActorId() {
         return actorId;
     }
 

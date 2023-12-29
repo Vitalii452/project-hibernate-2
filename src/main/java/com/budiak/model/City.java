@@ -12,7 +12,7 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "city_id", nullable = false, updatable = false)
-    private Long cityId;
+    private Short cityId;
 
     @Column(name = "city", nullable = false, length = 50)
     private String city;
@@ -33,7 +33,7 @@ public class City {
         this.country = country;
     }
 
-    public Long getCityId() {
+    public Short getCityId() {
         return cityId;
     }
 

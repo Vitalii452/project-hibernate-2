@@ -12,7 +12,7 @@ public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "country_id", nullable = false, updatable = false)
-    private Long countryId;
+    private Short countryId;
 
     @Column(name = "country", nullable = false, length = 50)
     private String country;
@@ -28,7 +28,7 @@ public class Country {
         this.country = country;
     }
 
-    public Long getCountryId() {
+    public Short getCountryId() {
         return countryId;
     }
 

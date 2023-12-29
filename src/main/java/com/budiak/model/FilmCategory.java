@@ -64,31 +64,31 @@ public class FilmCategory {
     @Embeddable
     public static class FilmCategoryId implements Serializable {
 
-        private Long filmId;
+        private Short filmId;
 
-        private Long categoryId;
+        private Byte categoryId;
 
         public FilmCategoryId() {
         }
 
-        public FilmCategoryId(Long filmId, Long categoryId) {
+        public FilmCategoryId(Short filmId, Byte  categoryId) {
             this.filmId = filmId;
             this.categoryId = categoryId;
         }
 
-        public Long getFilmId() {
+        public Short getFilmId() {
             return filmId;
         }
 
-        public void setFilmId(Long filmId) {
+        public void setFilmId(Short filmId) {
             this.filmId = filmId;
         }
 
-        public Long getCategoryId() {
+        public Byte  getCategoryId() {
             return categoryId;
         }
 
-        public void setCategoryId(Long categoryId) {
+        public void setCategoryId(Byte  categoryId) {
             this.categoryId = categoryId;
         }
 

@@ -12,7 +12,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id", nullable = false, updatable = false)
-    private Long addressId;
+    private Short addressId;
 
     @Column(name = "address", nullable = false, length = 50)
     private String address;
@@ -49,7 +49,7 @@ public class Address {
         this.phone = phone;
     }
 
-    public Long getAddressId() {
+    public Short getAddressId() {
         return addressId;
     }
 
