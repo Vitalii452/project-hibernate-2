@@ -21,7 +21,6 @@ public class Main {
 
         main.createCustomer(storeService, customerService);
         main.returnRental(rentalService, "Rafael", "Abney", "RAFAEL.ABNEY@sakilacustomer.org");
-        main.returnRental(rentalService, "tamara", "nguyen", null);
     }
 
     public void createCustomer(StoreService storeService, CustomerService customerService) {
