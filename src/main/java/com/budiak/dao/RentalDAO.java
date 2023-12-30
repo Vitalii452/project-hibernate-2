@@ -1,6 +1,5 @@
 package com.budiak.dao;
 
-import com.budiak.model.Customer;
 import com.budiak.model.Rental;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

@@ -40,11 +40,12 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Customer customer, Staff staff, Rental rental, BigDecimal amount) {
+    public Payment(Customer customer, Staff staff, Rental rental, LocalDateTime paymentDate, BigDecimal amount) {
         this.customer = customer;
         this.staff = staff;
         this.rental = rental;
         this.amount = amount;
+        this.paymentDate = paymentDate;
     }
 
     public Short getPaymentId() {

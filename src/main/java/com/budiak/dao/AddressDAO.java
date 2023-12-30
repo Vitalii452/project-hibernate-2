@@ -37,8 +37,8 @@ public class AddressDAO extends AbstractDAO<Address, Short> {
 
         predicates.add(builder.equal(builder.lower(root.get("district")), address.getDistrict().toLowerCase()));
 
-        predicates.add(builder.equal(root.join("city").get("city"), address.getCity().getCity()));
-        predicates.add(builder.equal(root.join("city").join("country").get("country"), address.getCity().getCountry().getCountry()));
+        predicates.add(builder.equal(root.join("city").get("cityName"), address.getCity().getCityName()));
+        predicates.add(builder.equal(root.join("city").join("country").get("countryName"), address.getCity().getCountry().getCountryName()));
 
         if (address.getPostalCode() != null) {
             predicates.add(builder.equal(root.get("postalCode"), address.getPostalCode()));

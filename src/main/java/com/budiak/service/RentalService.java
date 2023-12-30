@@ -1,55 +1,97 @@
 package com.budiak.service;
 
 import com.budiak.dao.RentalDAO;
-import com.budiak.model.Customer;
-import com.budiak.model.Rental;
+import com.budiak.model.*;
 import com.budiak.service.Exception.ServiceException;
 import com.budiak.util.TransactionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class RentalService {
 
-    private static final Logger logger = LogManager.getLogger(RentalService.class);
+    private static final Logger LOGGER = LogManager.getLogger(RentalService.class);
     private final RentalDAO rentalDAO;
     private final CustomerService customerService;
-    private final SessionFactory sessionFactory;
+    private final InventoryService inventoryService;
+    private final FilmService filmService;
+    private final StaffService staffService;
+    private final PaymentService paymentService;
 
-    public RentalService(RentalDAO rentalDAO, CustomerService customerService, SessionFactory sessionFactory) {
+    public RentalService(RentalDAO rentalDAO, CustomerService customerService, InventoryService inventoryService, FilmService filmService, StaffService staffService, PaymentService paymentService) {
         this.rentalDAO = rentalDAO;
         this.customerService = customerService;
-        this.sessionFactory = sessionFactory;
+        this.inventoryService = inventoryService;
+        this.filmService = filmService;
+        this.staffService = staffService;
+        this.paymentService = paymentService;
     }
 
-    public void returnRentalInTransaction(String firstName, String lastName, String email) {
-        logger.info("Initiating rental return process for customer: {} {}", firstName, lastName);
-        try (Session session = sessionFactory.openSession()) {
+    public void returnRentalInTransaction(Session session, String firstName, String lastName, String email) {
+        LOGGER.info("Initiating rental return process for customer: {} {}", firstName, lastName);
+        try {
             TransactionUtils.executeInTransaction(session, () -> {
-                logger.debug("Searching for customer by details: {} {} {}", firstName, lastName, email);
-                Customer customer = customerService.getCustomersByDetails(session, firstName, lastName, email);
+                LOGGER.debug("Searching for customer by details: {} {} {}", firstName, lastName, email);
+                Customer customer = customerService.getCustomerByDetails(session, firstName, lastName, email);
 
                 if (customer == null) {
-                    logger.warn("Customer not found for given details: {} {} {}, proceeding without action.", firstName, lastName, email);
+                    LOGGER.warn("Customer not found for given details: {} {} {}, proceeding without action.", firstName, lastName, email);
                     return;
                 }
-                logger.debug("Customer found, searching for active rental for customer ID: {}", customer.getCustomerId());
+                LOGGER.debug("Customer found, searching for active rental for customer ID: {}", customer.getCustomerId());
                 Rental rental = rentalDAO.findRentalByCustomerId(session, customer.getCustomerId());
 
                 if (rental == null) {
-                    logger.warn("Active rental not found for customerId: {}, proceeding without action.", customer.getCustomerId());
+                    LOGGER.warn("Active rental not found for customerId: {}, proceeding without action.", customer.getCustomerId());
                     return;
                 }
-                logger.info("Completing rental: {} for customerId: {}", rental, rental.getCustomer().getCustomerId());
+                LOGGER.info("Completing rental: {} for customerId: {}", rental, rental.getCustomer().getCustomerId());
                 rental.completeRental();
                 rentalDAO.update(session, rental);
 
-                logger.info("Rental successfully returned for customer: {}", customer);
+                LOGGER.info("Rental successfully returned for customer: {}", customer);
             });
         } catch (Exception e) {
-            logger.error("Unexpected error during rental return process", e);
+            LOGGER.error("Unexpected error during rental return process", e);
             throw new ServiceException("Unexpected error during rental return", e);
         }
+    }
+
+    public void processRentalAndPaymentTransaction(Session session, String firstName, String lastName, String email,
+                                                   String filmTitle, int filmYear, byte storeId, byte staffId, BigDecimal amount) {
+        if (session == null || !session.isOpen()) {
+            throw new ServiceException("Session is closed or null");
+        }
+
+        try {
+            TransactionUtils.executeInTransaction(session, () -> {
+                Customer customer = customerService.getCustomerByDetails(session, firstName, lastName, email);
+                Film film = filmService.findFilmByTitleAndYear(session, filmTitle, filmYear);
+                Staff staff = staffService.findStaffById(session, staffId);
+
+                Inventory inventory = inventoryService.findAvailableInventoryByFilmAndStoreId(session, film.getFilmId(), storeId);
+                Rental rental = createRental(inventory, customer, staff);
+                rentalDAO.save(session, rental);
+
+                Payment payment = createPayment(customer, staff, rental, amount);
+                paymentService.makePayment(session, payment);
+
+                LOGGER.info("Rental transaction completed successfully for customer: {}", customer.getCustomerId());
+            });
+        } catch (Exception e) {
+            LOGGER.error("Rental transaction failed: {}", e.getMessage(), e);
+            throw new ServiceException("Unexpected error during rental process", e);
+        }
+    }
+
+    private Rental createRental(Inventory inventory, Customer customer, Staff staff) {
+        return new Rental(LocalDateTime.now(), inventory, customer, null, staff);
+    }
+
+    private Payment createPayment(Customer customer, Staff staff, Rental rental, BigDecimal amount) {
+        return new Payment(customer, staff, rental, LocalDateTime.now(), amount);
     }
 }

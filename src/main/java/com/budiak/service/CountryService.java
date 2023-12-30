@@ -8,7 +8,7 @@ import org.hibernate.Session;
 
 public class CountryService {
 
-    private static final Logger logger = LogManager.getLogger(CountryService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CountryService.class);
     private final CountryDAO countryDAO;
 
     public CountryService(CountryDAO countryDAO) {
@@ -16,23 +16,27 @@ public class CountryService {
     }
 
     public Country findOrCreateCountry(Session session, String countryName) {
-        logger.debug("Attempting to find or create a country: {}", countryName);
+        if (session == null || countryName == null || countryName.isEmpty()) {
+            throw new IllegalArgumentException("Session and countryName must not be null or empty");
+        }
+
+        LOGGER.debug("Attempting to find or create a country: {}", countryName);
 
         if (!session.getTransaction().isActive()) {
-            logger.error("Session transaction not active for country: {}", countryName);
+            LOGGER.error("Session transaction not active for country: {}", countryName);
             throw new IllegalStateException("Session transaction required!");
         }
 
-        Country countryObj = new Country(countryName);
-        Country countryInBd = countryDAO.findMatchingCountry(session, countryObj);
+        Country newCountry = new Country(countryName);
+        Country existingCountry = countryDAO.findMatchingCountry(session, newCountry);
 
-        if (countryInBd == null) {
-            logger.info("Creating a new country in the database: {}", countryName);
-            countryDAO.save(session, countryObj);
-            return countryObj;
+        if (existingCountry == null) {
+            LOGGER.info("Creating a new country in the database: {}", countryName);
+            countryDAO.save(session, newCountry);
+            return newCountry;
         }
 
-        logger.info("Country found in the database: {}", countryName);
-        return countryInBd;
+        LOGGER.info("Country found in the database: {}", countryName);
+        return existingCountry;
     }
 }

@@ -15,7 +15,7 @@ public class Category {
     private Byte categoryId;
 
     @Column(name = "name", length = 25, nullable = false)
-    private String name;
+    private String categoryName;
 
     @Column(name = "last_update", nullable = false, insertable = false, updatable = false)
     @UpdateTimestamp
@@ -24,20 +24,20 @@ public class Category {
     public Category() {
     }
 
-    public Category(String name) {
-        this.name = name;
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public Byte getCategoryId() {
         return categoryId;
     }
 
-    public String getName() {
-        return name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryName(String name) {
+        this.categoryName = name;
     }
 
     public LocalDateTime getLastUpdate() {

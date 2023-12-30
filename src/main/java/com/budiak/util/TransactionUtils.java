@@ -14,7 +14,7 @@ public class TransactionUtils {
      * Executes an action within a transactional context.
      *
      * @param session the Hibernate session
-     * @param action the action to be executed
+     * @param action  the action to be executed
      * @throws RuntimeException if the transaction fails
      */
     public static void executeInTransaction(Session session, Runnable action) {
@@ -32,9 +32,9 @@ public class TransactionUtils {
     /**
      * Executes a function within a transactional context and returns a result.
      *
-     * @param <T> the type of the result
+     * @param <T>     the type of the result
      * @param session the Hibernate session
-     * @param action the function to be executed
+     * @param action  the function to be executed
      * @return the result of the function
      * @throws RuntimeException if the transaction fails
      */

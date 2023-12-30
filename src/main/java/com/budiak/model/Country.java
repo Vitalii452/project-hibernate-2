@@ -15,7 +15,7 @@ public class Country {
     private Short countryId;
 
     @Column(name = "country", nullable = false, length = 50)
-    private String country;
+    private String countryName;
 
     @Column(name = "last_update", nullable = false, insertable = false, updatable = false)
     @UpdateTimestamp
@@ -24,20 +24,20 @@ public class Country {
     public Country() {
     }
 
-    public Country(String country) {
-        this.country = country;
+    public Country(String countryName) {
+        this.countryName = countryName;
     }
 
     public Short getCountryId() {
         return countryId;
     }
 
-    public String getCountry() {
-        return country;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountryName(String country) {
+        this.countryName = country;
     }
 
     public LocalDateTime getUpdateTime() {

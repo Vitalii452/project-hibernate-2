@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(schema = "movie", name = "film")
@@ -53,7 +54,7 @@ public class Film {
 
     @Convert(converter = SpecialFeaturesConverter.class)
     @Column(name = "special_features")
-    private String specialFeatures;
+    private Set<String> specialFeatures;
 
     @Column(name = "last_update", nullable = false, insertable = false, updatable = false)
     @UpdateTimestamp
@@ -62,7 +63,7 @@ public class Film {
     public Film() {
     }
 
-    public Film(String title, String description, Integer releaseYear, Language language, Language originalLanguage, Byte rentalDuration, BigDecimal rentalRate, Short length, BigDecimal replacementCost, Rating rating, String specialFeatures) {
+    public Film(String title, String description, Integer releaseYear, Language language, Language originalLanguage, Byte rentalDuration, BigDecimal rentalRate, Short length, BigDecimal replacementCost, Rating rating, Set<String> specialFeatures) {
         this.title = title;
         this.description = description;
         this.releaseYear = releaseYear;
@@ -158,11 +159,11 @@ public class Film {
         this.length = length;
     }
 
-    public String getSpecialFeatures() {
+    public Set<String> getSpecialFeatures() {
         return specialFeatures;
     }
 
-    public void setSpecialFeatures(String specialFeatures) {
+    public void setSpecialFeatures(Set<String> specialFeatures) {
         this.specialFeatures = specialFeatures;
     }
 

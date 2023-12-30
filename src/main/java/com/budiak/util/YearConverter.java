@@ -3,6 +3,8 @@ package com.budiak.util;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
+import java.time.LocalDate;
+
 @Converter
 public class YearConverter implements AttributeConverter<Integer, String> {
 
@@ -19,7 +21,8 @@ public class YearConverter implements AttributeConverter<Integer, String> {
         if (dbData == null || dbData.isEmpty()) {
             return null;
         }
-        return Integer.parseInt(dbData);
+        LocalDate date = LocalDate.parse(dbData);
+        return date.getYear();
     }
 }
 

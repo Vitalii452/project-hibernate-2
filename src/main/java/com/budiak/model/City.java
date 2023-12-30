@@ -15,7 +15,7 @@ public class City {
     private Short cityId;
 
     @Column(name = "city", nullable = false, length = 50)
-    private String city;
+    private String cityName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id", nullable = false)
@@ -28,8 +28,8 @@ public class City {
     public City() {
     }
 
-    public City(String city, Country country) {
-        this.city = city;
+    public City(String cityName, Country country) {
+        this.cityName = cityName;
         this.country = country;
     }
 
@@ -37,12 +37,12 @@ public class City {
         return cityId;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityName(String city) {
+        this.cityName = city;
     }
 
     public Country getCountry() {

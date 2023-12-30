@@ -9,7 +9,7 @@ import org.hibernate.Session;
 
 public class AddressService {
 
-    private static final Logger logger = LogManager.getLogger(AddressService.class);
+    private static final Logger LOGGER = LogManager.getLogger(AddressService.class);
     private final AddressDAO addressDAO;
     private final CityService cityService;
 
@@ -19,25 +19,29 @@ public class AddressService {
     }
 
     public Address findOrCreateAddress(Session session, String address, String address2, String district, City city, String postalCode, String phone) {
-        logger.debug("Attempting to find or create an address for: {}", city.getCity());
+        if (session == null || city == null) {
+            throw new IllegalArgumentException("Session and city must not be null");
+        }
+
+        LOGGER.debug("Attempting to find or create an address for: {}", city.getCityName());
 
         if (!session.getTransaction().isActive()) {
-            logger.error("Session transaction not active!");
+            LOGGER.error("Session transaction not active for city: {}", city.getCityName());
             throw new IllegalStateException("Session transaction required!");
         }
 
-        City cityInDb = cityService.findOrCreateCity(session, city.getCity(), city.getCountry());
-        Address addressObj = new Address(address, address2, district, cityInDb, postalCode, phone);
-        Address addressInDb = addressDAO.findMatchingAddress(session, addressObj);
+        City cityInDb = cityService.findOrCreateCity(session, city.getCityName(), city.getCountry());
+        Address newAddress = new Address(address, address2, district, cityInDb, postalCode, phone);
+        Address existingAddress = addressDAO.findMatchingAddress(session, newAddress);
 
-        if (addressInDb == null) {
-            logger.info("Creating a new address in the database");
-            addressDAO.save(session, addressObj);
-            return addressObj;
+        if (existingAddress == null) {
+            LOGGER.info("Creating a new address in the database");
+            addressDAO.save(session, newAddress);
+            return newAddress;
         }
 
-        logger.info("Address found in the database: {}", addressInDb.getAddress());
-        return addressInDb;
+        LOGGER.info("Address found in the database: {}", existingAddress.getAddress());
+        return existingAddress;
     }
 }
 

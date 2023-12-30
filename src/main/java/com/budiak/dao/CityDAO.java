@@ -18,7 +18,7 @@ public class CityDAO extends AbstractDAO<City, Short> {
     }
 
     public City findMatchingCity(Session session, City city) {
-        if (city.getCity() == null || city.getCountry() == null) {
+        if (city.getCityName() == null || city.getCountry() == null) {
             return null;
         }
 
@@ -28,8 +28,8 @@ public class CityDAO extends AbstractDAO<City, Short> {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        predicates.add(builder.equal(builder.lower(root.get("city")), city.getCity().toLowerCase()));
-        predicates.add(builder.equal(root.join("country").get("country"), city.getCountry().getCountry()));
+        predicates.add(builder.equal(builder.lower(root.get("cityName")), city.getCityName().toLowerCase()));
+        predicates.add(builder.equal(root.join("country").get("countryName"), city.getCountry().getCountryName()));
 
         criteriaQuery.select(root).where(predicates.toArray(new Predicate[0]));
 

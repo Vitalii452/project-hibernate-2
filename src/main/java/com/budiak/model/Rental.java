@@ -59,6 +59,10 @@ public class Rental {
         this.rentalDate = rentalDate;
     }
 
+    public void startRental() {
+        this.rentalDate = LocalDateTime.now();
+    }
+
     public Inventory getInventory() {
         return inventory;
     }

@@ -9,7 +9,7 @@ import org.hibernate.Session;
 
 public class CityService {
 
-    private static final Logger logger = LogManager.getLogger(CityService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CityService.class);
     private final CityDAO cityDAO;
     private final CountryService countryService;
 
@@ -19,24 +19,29 @@ public class CityService {
     }
 
     public City findOrCreateCity(Session session, String cityName, Country country) {
-        logger.debug("Attempting to find or create a city: {}", cityName);
+        if (session == null || cityName == null || country == null ||
+                cityName.isEmpty()) {
+            throw new IllegalArgumentException("Session, cityName, and country must not be null");
+        }
+
+        LOGGER.debug("Attempting to find or create a city: {}", cityName);
 
         if (!session.getTransaction().isActive()) {
-            logger.error("Session transaction not active for city: {}", cityName);
+            LOGGER.error("Session transaction not active for city: {}", cityName);
             throw new IllegalStateException("Session transaction required!");
         }
 
-        Country countryInDb = countryService.findOrCreateCountry(session, country.getCountry());
-        City cityObj = new City(cityName, countryInDb);
-        City cityInBd = cityDAO.findMatchingCity(session, cityObj);
+        Country countryInDb = countryService.findOrCreateCountry(session, country.getCountryName());
+        City newCity = new City(cityName, countryInDb);
+        City existingCity = cityDAO.findMatchingCity(session, newCity);
 
-        if (cityInBd == null) {
-            logger.info("Creating a new city in the database: {}", cityName);
-            cityDAO.save(session, cityObj);
-            return cityObj;
+        if (existingCity == null) {
+            LOGGER.info("Creating a new city in the database: {}", cityName);
+            cityDAO.save(session, newCity);
+            return newCity;
         }
 
-        logger.info("City found in the database: {}", cityInBd.getCity());
-        return cityInBd;
+        LOGGER.info("City found in the database: {}", existingCity.getCityName());
+        return existingCity;
     }
 }

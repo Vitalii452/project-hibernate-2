@@ -8,9 +8,6 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CountryDAO extends AbstractDAO<Country, Long> {
 
     public CountryDAO() {
@@ -18,7 +15,7 @@ public class CountryDAO extends AbstractDAO<Country, Long> {
     }
 
     public Country findMatchingCountry(Session session, Country country) {
-        if (country.getCountry() == null) {
+        if (country.getCountryName() == null) {
             return null;
         }
 
@@ -26,11 +23,9 @@ public class CountryDAO extends AbstractDAO<Country, Long> {
         CriteriaQuery<Country> criteriaQuery = builder.createQuery(Country.class);
         Root<Country> root = criteriaQuery.from(Country.class);
 
-        List<Predicate> predicates = new ArrayList<>();
+        Predicate countryPredicate = builder.equal(builder.lower(root.get("countryName")), country.getCountryName().toLowerCase());
 
-        predicates.add(builder.equal(builder.lower(root.get("country")), country.getCountry().toLowerCase()));
-
-        criteriaQuery.select(root).where(predicates.toArray(new Predicate[0]));
+        criteriaQuery.select(root).where(countryPredicate);
 
         TypedQuery<Country> query = session.createQuery(criteriaQuery);
         return query.getResultList().stream().findFirst().orElse(null);
