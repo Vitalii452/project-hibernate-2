@@ -28,7 +28,7 @@ public class CityDAO extends AbstractDAO<City, Short> {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        predicates.add(builder.equal(root.get("city"), city.getCity()));
+        predicates.add(builder.equal(builder.lower(root.get("city")), city.getCity().toLowerCase()));
         predicates.add(builder.equal(root.join("country").get("country"), city.getCountry().getCountry()));
 
         criteriaQuery.select(root).where(predicates.toArray(new Predicate[0]));

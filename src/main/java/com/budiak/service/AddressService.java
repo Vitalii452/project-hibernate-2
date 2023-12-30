@@ -28,16 +28,16 @@ public class AddressService {
 
         City cityInDb = cityService.findOrCreateCity(session, city.getCity(), city.getCountry());
         Address addressObj = new Address(address, address2, district, cityInDb, postalCode, phone);
-        Address addressInDB = addressDAO.findMatchingAddress(session, addressObj);
+        Address addressInDb = addressDAO.findMatchingAddress(session, addressObj);
 
-        if (addressInDB == null) {
+        if (addressInDb == null) {
             logger.info("Creating a new address in the database");
             addressDAO.save(session, addressObj);
             return addressObj;
         }
 
-        logger.info("Address found in the database");
-        return addressInDB;
+        logger.info("Address found in the database: {}", addressInDb.getAddress());
+        return addressInDb;
     }
 }
 

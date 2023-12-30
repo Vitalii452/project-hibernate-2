@@ -28,7 +28,7 @@ public class CountryDAO extends AbstractDAO<Country, Long> {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        predicates.add(builder.equal(root.get("country"), country.getCountry()));
+        predicates.add(builder.equal(builder.lower(root.get("country")), country.getCountry().toLowerCase()));
 
         criteriaQuery.select(root).where(predicates.toArray(new Predicate[0]));
 

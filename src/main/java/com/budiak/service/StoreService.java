@@ -10,12 +10,12 @@ import org.hibernate.SessionFactory;
 public class StoreService {
 
     private static final Logger logger = LogManager.getLogger(StoreService.class);
-    private final SessionFactory sessionFactory;
     private final StoreDAO storeDAO;
+    private final SessionFactory sessionFactory;
 
-    public StoreService(SessionFactory sessionFactory, StoreDAO storeDAO) {
-        this.sessionFactory = sessionFactory;
+    public StoreService(StoreDAO storeDAO, SessionFactory sessionFactory) {
         this.storeDAO = storeDAO;
+        this.sessionFactory = sessionFactory;
     }
 
     public Store findStoreById(Byte id) {

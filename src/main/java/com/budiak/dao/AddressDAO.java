@@ -29,13 +29,13 @@ public class AddressDAO extends AbstractDAO<Address, Short> {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        predicates.add(builder.equal(root.get("address"), address.getAddress()));
+        predicates.add(builder.equal(builder.lower(root.get("address")), address.getAddress().toLowerCase()));
 
         if (address.getAddress2() != null) {
-            predicates.add(builder.equal(root.get("address2"), address.getAddress2()));
+            predicates.add(builder.equal(builder.lower(root.get("address2")), address.getAddress2().toLowerCase()));
         }
 
-        predicates.add(builder.equal(root.get("district"), address.getDistrict()));
+        predicates.add(builder.equal(builder.lower(root.get("district")), address.getDistrict().toLowerCase()));
 
         predicates.add(builder.equal(root.join("city").get("city"), address.getCity().getCity()));
         predicates.add(builder.equal(root.join("city").join("country").get("country"), address.getCity().getCountry().getCountry()));

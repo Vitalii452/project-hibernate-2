@@ -83,6 +83,10 @@ public class Rental {
         this.returnDate = returnDate;
     }
 
+    public void completeRental() {
+        this.returnDate = LocalDateTime.now();
+    }
+
     public Staff getStaff() {
         return staff;
     }

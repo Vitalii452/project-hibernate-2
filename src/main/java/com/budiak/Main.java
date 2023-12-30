@@ -12,13 +12,16 @@ public class Main {
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-        StoreService storeService = new StoreService(sessionFactory, new StoreDAO());
+        StoreService storeService = new StoreService(new StoreDAO(), sessionFactory);
         CountryService countryService = new CountryService(new CountryDAO());
         CityService cityService = new CityService(new CityDAO(), countryService);
         AddressService addressService = new AddressService(new AddressDAO(), cityService);
         CustomerService customerService = new CustomerService(new CustomerDAO(), sessionFactory, addressService);
+        RentalService rentalService = new RentalService(new RentalDAO(), customerService, sessionFactory);
 
         main.createCustomer(storeService, customerService);
+        main.returnRental(rentalService, "Rafael", "Abney", "RAFAEL.ABNEY@sakilacustomer.org");
+        main.returnRental(rentalService, "tamara", "nguyen", null);
     }
 
     public void createCustomer(StoreService storeService, CustomerService customerService) {
@@ -44,5 +47,9 @@ public class Main {
         );
 
         customerService.createCustomerInTransaction(customer);
+    }
+
+    public void returnRental(RentalService rentalService, String firstName, String lastName, String email) {
+        rentalService.returnRentalInTransaction(firstName, lastName, email);
     }
 }
