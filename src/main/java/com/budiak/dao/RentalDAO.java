@@ -14,7 +14,7 @@ public class RentalDAO extends AbstractDAO<Rental, Long> {
         super(Rental.class);
     }
 
-    public Rental findRentalByCustomerId(Session session, Short customerId) {
+    public Rental findRentalByCustomerId(Session session, short customerId) {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Rental> criteriaQuery = builder.createQuery(Rental.class);
         Root<Rental> root = criteriaQuery.from(Rental.class);

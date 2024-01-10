@@ -46,13 +46,56 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(Store store, String firstName, String lastName, String email, Address address, Boolean active) {
-        this.store = store;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.address = address;
-        this.active = active;
+    private Customer(Builder builder) {
+        this.store = builder.store;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.address = builder.address;
+        this.active = builder.active;
+    }
+
+    public static class Builder {
+        private Store store;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private Address address;
+        private Boolean active;
+
+        public Builder setStore(Store store) {
+            this.store = store;
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder setActive(Boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Customer build() {
+            return new Customer(this);
+        }
     }
 
     public Short getCustomerId() {

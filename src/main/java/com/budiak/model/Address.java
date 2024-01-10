@@ -40,13 +40,56 @@ public class Address {
     public Address() {
     }
 
-    public Address(String address, String address2, String district, City city, String postalCode, String phone) {
-        this.address = address;
-        this.address2 = address2;
-        this.district = district;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.phone = phone;
+    private Address(Builder builder) {
+        this.address = builder.address;
+        this.address2 = builder.address2;
+        this.district = builder.district;
+        this.city = builder.city;
+        this.postalCode = builder.postalCode;
+        this.phone = builder.phone;
+    }
+
+    public static class Builder {
+        private String address;
+        private String address2;
+        private String district;
+        private City city;
+        private String postalCode;
+        private String phone;
+
+        public Builder setAddress(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder setAddress2(String address2) {
+            this.address2 = address2;
+            return this;
+        }
+
+        public Builder setDistrict(String district) {
+            this.district = district;
+            return this;
+        }
+
+        public Builder setCity(City city) {
+            this.city = city;
+            return this;
+        }
+
+        public Builder setPostalCode(String postalCode) {
+            this.postalCode = postalCode;
+            return this;
+        }
+
+        public Builder setPhone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Address build() {
+            return new Address(this);
+        }
     }
 
     public Short getAddressId() {

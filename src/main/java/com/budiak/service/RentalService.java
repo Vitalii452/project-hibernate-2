@@ -3,6 +3,7 @@ package com.budiak.service;
 import com.budiak.dao.RentalDAO;
 import com.budiak.model.*;
 import com.budiak.service.Exception.ServiceException;
+import com.budiak.util.HibernateUtil;
 import com.budiak.util.TransactionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,20 +18,22 @@ public class RentalService {
     private final RentalDAO rentalDAO;
     private final CustomerService customerService;
     private final InventoryService inventoryService;
-    private final FilmService filmService;
+    private final FilmManagementService filmManagementService;
     private final StaffService staffService;
     private final PaymentService paymentService;
 
-    public RentalService(RentalDAO rentalDAO, CustomerService customerService, InventoryService inventoryService, FilmService filmService, StaffService staffService, PaymentService paymentService) {
+    public RentalService(RentalDAO rentalDAO, CustomerService customerService, InventoryService inventoryService, FilmManagementService filmManagementService, StaffService staffService, PaymentService paymentService) {
         this.rentalDAO = rentalDAO;
         this.customerService = customerService;
         this.inventoryService = inventoryService;
-        this.filmService = filmService;
+        this.filmManagementService = filmManagementService;
         this.staffService = staffService;
         this.paymentService = paymentService;
     }
 
     public void returnRentalInTransaction(Session session, String firstName, String lastName, String email) {
+        HibernateUtil.validateSession(session);
+
         LOGGER.info("Initiating rental return process for customer: {} {}", firstName, lastName);
         try {
             TransactionUtils.executeInTransaction(session, () -> {
@@ -49,6 +52,7 @@ public class RentalService {
                     return;
                 }
                 LOGGER.info("Completing rental: {} for customerId: {}", rental, rental.getCustomer().getCustomerId());
+
                 rental.completeRental();
                 rentalDAO.update(session, rental);
 
@@ -62,17 +66,15 @@ public class RentalService {
 
     public void processRentalAndPaymentTransaction(Session session, String firstName, String lastName, String email,
                                                    String filmTitle, int filmYear, byte storeId, byte staffId, BigDecimal amount) {
-        if (session == null || !session.isOpen()) {
-            throw new ServiceException("Session is closed or null");
-        }
+        HibernateUtil.validateSession(session);
 
         try {
             TransactionUtils.executeInTransaction(session, () -> {
                 Customer customer = customerService.getCustomerByDetails(session, firstName, lastName, email);
-                Film film = filmService.findFilmByTitleAndYear(session, filmTitle, filmYear);
+                Film film = filmManagementService.findFilmByTitleAndYear(session, filmTitle, filmYear);
                 Staff staff = staffService.findStaffById(session, staffId);
 
-                Inventory inventory = inventoryService.findAvailableInventoryByFilmAndStoreId(session, film.getFilmId(), storeId);
+                Inventory inventory = inventoryService.findAvailableInventoryByDetails(session, film.getFilmId(), storeId);
                 Rental rental = createRental(inventory, customer, staff);
                 rentalDAO.save(session, rental);
 

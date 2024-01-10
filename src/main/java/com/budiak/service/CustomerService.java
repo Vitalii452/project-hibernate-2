@@ -4,6 +4,7 @@ import com.budiak.dao.CustomerDAO;
 import com.budiak.model.Address;
 import com.budiak.model.Customer;
 import com.budiak.service.Exception.ServiceException;
+import com.budiak.util.HibernateUtil;
 import com.budiak.util.TransactionUtils;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
@@ -24,27 +25,22 @@ public class CustomerService {
     }
 
     public void createCustomerInTransaction(Session session, Customer customer) {
+        HibernateUtil.validateSession(session);
+
         try {
             TransactionUtils.executeInTransaction(session, () -> {
-                Address address = addressService.findOrCreateAddress(
-                        session,
-                        customer.getAddress().getAddress(),
-                        customer.getAddress().getAddress2(),
-                        customer.getAddress().getDistrict(),
-                        customer.getAddress().getCity(),
-                        customer.getAddress().getPostalCode(),
-                        customer.getAddress().getPhone()
-                );
+                Address address = addressService.findOrCreateAddress(session,customer.getAddress());
                 customer.setAddress(address);
 
-                Customer customerInDb = customerDAO.findMatchingCustomer(session, customer);
-                if (customerInDb == null) {
+                Customer existingCustomer = customerDAO.findMatchingCustomer(session, customer);
+                if (existingCustomer == null) {
                     customerDAO.save(session, customer);
                     LOGGER.info("New customer created: {}", customer);
                 } else {
-                    LOGGER.info("Customer already exists: {}", customerInDb);
+                    LOGGER.info("Customer already exists: {}", existingCustomer);
                 }
             });
+
         } catch (Exception e) {
             LOGGER.error("Error creating customer: {}", e.getMessage(), e);
             throw new ServiceException("Unable to create customer", e);
@@ -66,21 +62,21 @@ public class CustomerService {
      */
 
     public Customer getCustomerByDetails(Session session, String firstName, String lastName, String email) {
-        LOGGER.debug("Attempting to get customer by details: {} {} {}", firstName, lastName, email);
+        HibernateUtil.validateSession(session);
 
-        if (session == null || !session.isOpen()) {
-            LOGGER.error("Session is closed or null");
-            throw new ServiceException("Session is not open");
-        }
+        LOGGER.debug("Attempting to get customer by details: {} {} {}", firstName, lastName, email);
 
         try {
             return customerDAO.findCustomerByDetails(session, firstName, lastName, email);
+
         } catch (NoResultException e) {
             LOGGER.info("No customer found for given details: {} {} {}", firstName, lastName, email);
             return null;
+
         } catch (NonUniqueResultException e) {
             LOGGER.error("Multiple customers found for given details: {} {} {}", firstName, lastName, email);
             throw new ServiceException("Multiple customers found", e);
+
         } catch (Exception e) {
             LOGGER.error("Error finding customer: {}", e.getMessage(), e);
             throw new ServiceException("Error finding customer", e);

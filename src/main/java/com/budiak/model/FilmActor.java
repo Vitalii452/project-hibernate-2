@@ -12,7 +12,7 @@ import java.util.Objects;
 public class FilmActor {
 
     @EmbeddedId
-    private FilmActorId filmActorId;
+    private Id id;
 
     @Column(name = "last_update", nullable = false, insertable = false, updatable = false)
     @UpdateTimestamp
@@ -34,11 +34,11 @@ public class FilmActor {
     public FilmActor(Actor actor, Film film) {
         this.actor = actor;
         this.film = film;
-        this.filmActorId = new FilmActorId(actor.getActorId(), film.getFilmId());
+        this.id = new Id(actor.getActorId(), film.getFilmId());
     }
 
-    public FilmActorId getFilmActorId() {
-        return filmActorId;
+    public Id getFilmActorId() {
+        return id;
     }
 
     public LocalDateTime getLastUpdate() {
@@ -62,17 +62,17 @@ public class FilmActor {
     }
 
     @Embeddable
-    public static class FilmActorId implements Serializable {
+    public static class Id implements Serializable {
 
         private Short actorId;
 
         private Short filmId;
 
 
-        public FilmActorId() {
+        public Id() {
         }
 
-        public FilmActorId(Short actorId, Short filmId) {
+        public Id(Short actorId, Short filmId) {
             this.actorId = actorId;
             this.filmId = filmId;
         }
@@ -97,7 +97,7 @@ public class FilmActor {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            FilmActorId that = (FilmActorId) o;
+            Id that = (Id) o;
             return Objects.equals(actorId, that.actorId) && Objects.equals(filmId, that.filmId);
         }
 

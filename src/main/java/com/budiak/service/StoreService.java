@@ -3,13 +3,14 @@ package com.budiak.service;
 import com.budiak.dao.StoreDAO;
 import com.budiak.model.Store;
 import com.budiak.service.Exception.ServiceException;
+import com.budiak.util.HibernateUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 public class StoreService {
 
-    private static final Logger LOGGER = LogManager.getLogger(CityService.class);
+    private static final Logger LOGGER = LogManager.getLogger(StoreService.class);
     private final StoreDAO storeDAO;
 
     public StoreService(StoreDAO storeDAO) {
@@ -17,13 +18,19 @@ public class StoreService {
     }
 
     public Store findStoreById(Session session, Byte id) {
-        if (session == null || !session.isOpen()) {
-            LOGGER.error("Session is closed or null");
-            throw new ServiceException("Session is not open");
-        }
+        HibernateUtil.validateSession(session);
 
         LOGGER.debug("Attempting to find store with id: {}", id);
-        Store store = storeDAO.findById(session, id);
+
+        Store store = null;
+        try {
+            store = storeDAO.findById(session, id);
+
+        } catch (Exception e) {
+            LOGGER.error("Error finding store", e);
+            throw new ServiceException("Error finding store", e);
+        }
+
         if (store == null) {
             LOGGER.info("No store found with id: {}", id);
         } else {

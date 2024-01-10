@@ -14,7 +14,7 @@ public class InventoryDAO extends AbstractDAO<Inventory, Integer> {
         super(Inventory.class);
     }
 
-    public Inventory findInventoryByFilmAndStoreId(Session session, short filmId, byte storeId) {
+    public Inventory findInventoryByDetails(Session session, short filmId, byte storeId) {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Inventory> criteriaQuery = builder.createQuery(Inventory.class);
         Root<Inventory> root = criteriaQuery.from(Inventory.class);

@@ -2,6 +2,8 @@ package com.budiak.service;
 
 import com.budiak.dao.CountryDAO;
 import com.budiak.model.Country;
+import com.budiak.service.Exception.ServiceException;
+import com.budiak.util.HibernateUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -15,28 +17,34 @@ public class CountryService {
         this.countryDAO = countryDAO;
     }
 
-    public Country findOrCreateCountry(Session session, String countryName) {
-        if (session == null || countryName == null || countryName.isEmpty()) {
-            throw new IllegalArgumentException("Session and countryName must not be null or empty");
+    public Country findOrCreateCountry(Session session, Country country) {
+        HibernateUtil.validateSessionAndTransaction(session);
+
+        LOGGER.debug("Attempting to find or create a country: {}", country.getCountryName());
+
+        Country newCountry = new Country(country.getCountryName());
+        Country existingCountry = null;
+        try {
+            existingCountry = countryDAO.findMatchingCountry(session, newCountry);
+
+        } catch (Exception e) {
+            LOGGER.error("Error finding country", e);
+            throw new ServiceException("Error finding country", e);
         }
-
-        LOGGER.debug("Attempting to find or create a country: {}", countryName);
-
-        if (!session.getTransaction().isActive()) {
-            LOGGER.error("Session transaction not active for country: {}", countryName);
-            throw new IllegalStateException("Session transaction required!");
-        }
-
-        Country newCountry = new Country(countryName);
-        Country existingCountry = countryDAO.findMatchingCountry(session, newCountry);
 
         if (existingCountry == null) {
-            LOGGER.info("Creating a new country in the database: {}", countryName);
-            countryDAO.save(session, newCountry);
+            try {
+                LOGGER.info("Creating a new country in the database: {}", country.getCountryName());
+                countryDAO.save(session, newCountry);
+
+            } catch (Exception e) {
+                LOGGER.error("Error saving country: {}", e.getMessage(), e);
+                throw new ServiceException("Error saving country", e);
+            }
             return newCountry;
         }
 
-        LOGGER.info("Country found in the database: {}", countryName);
+        LOGGER.info("Country found in the database: {}", country.getCountryName());
         return existingCountry;
     }
 }

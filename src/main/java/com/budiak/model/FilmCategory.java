@@ -12,7 +12,7 @@ import java.util.Objects;
 public class FilmCategory {
 
     @EmbeddedId
-    private FilmCategoryId filmCategoryId;
+    private Id id;
 
     @Column(name = "last_update", nullable = false, insertable = false, updatable = false)
     @UpdateTimestamp
@@ -34,11 +34,11 @@ public class FilmCategory {
     public FilmCategory(Film film, Category category) {
         this.film = film;
         this.category = category;
-        this.filmCategoryId = new FilmCategoryId(film.getFilmId(), category.getCategoryId());
+        this.id = new Id(film.getFilmId(), category.getCategoryId());
     }
 
-    public FilmCategoryId getFilmCategoryId() {
-        return filmCategoryId;
+    public Id getFilmCategoryId() {
+        return id;
     }
 
     public LocalDateTime getLastUpdate() {
@@ -62,16 +62,16 @@ public class FilmCategory {
     }
 
     @Embeddable
-    public static class FilmCategoryId implements Serializable {
+    public static class Id implements Serializable {
 
         private Short filmId;
 
         private Byte categoryId;
 
-        public FilmCategoryId() {
+        public Id() {
         }
 
-        public FilmCategoryId(Short filmId, Byte categoryId) {
+        public Id(Short filmId, Byte categoryId) {
             this.filmId = filmId;
             this.categoryId = categoryId;
         }
@@ -96,7 +96,7 @@ public class FilmCategory {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            FilmCategoryId that = (FilmCategoryId) o;
+            Id that = (Id) o;
             return Objects.equals(filmId, that.filmId) && Objects.equals(categoryId, that.categoryId);
         }
 
