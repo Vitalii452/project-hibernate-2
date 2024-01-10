@@ -52,9 +52,9 @@ public class FilmManagementService {
     /**
      * Finds a Film by its title and release year.
      *
-     * @param session    the session used for the database transaction
-     * @param title      the title of the Film to search for
-     * @param filmYear   the release year of the Film to search for
+     * @param session  the session used for the database transaction
+     * @param title    the title of the Film to search for
+     * @param filmYear the release year of the Film to search for
      * @return the Film with the given title and release year, or null if not found
      * @throws ServiceException if an error occurs while finding the Film
      */
@@ -87,7 +87,7 @@ public class FilmManagementService {
     public Optional<Film> addNewFilm(Session session, Film film) {
         HibernateUtil.validateSessionAndTransaction(session);
 
-         LOGGER.debug("Attempting to create film with title and year: {} {}", film.getTitle(), film.getReleaseYear());
+        LOGGER.debug("Attempting to create film with title and year: {} {}", film.getTitle(), film.getReleaseYear());
 
         Optional<Film> existingFilm = filmDAO.findFilmByDetails(session, film.getTitle(), film.getReleaseYear());
 

@@ -1,6 +1,5 @@
 package com.budiak.dao;
 
-import com.budiak.model.Actor;
 import com.budiak.model.Category;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;

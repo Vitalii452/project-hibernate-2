@@ -76,15 +76,15 @@ public class RentalService {
     /**
      * Processes a new rental in transaction.
      *
-     * @param session      the Hibernate session
-     * @param firstName    the first name of the customer
-     * @param lastName     the last name of the customer
-     * @param email        the email address of the customer
-     * @param filmTitle    the title of the film
-     * @param filmYear     the year of the film
-     * @param storeId      the ID of the store where the rental takes place
-     * @param staffId      the ID of the staff handling the rental
-     * @param amount       the payment amount for the rental
+     * @param session   the Hibernate session
+     * @param firstName the first name of the customer
+     * @param lastName  the last name of the customer
+     * @param email     the email address of the customer
+     * @param filmTitle the title of the film
+     * @param filmYear  the year of the film
+     * @param storeId   the ID of the store where the rental takes place
+     * @param staffId   the ID of the staff handling the rental
+     * @param amount    the payment amount for the rental
      * @throws ServiceException if an unexpected error occurs during the rental process
      */
     public void processRentalInTransaction(Session session, String firstName, String lastName, String email,

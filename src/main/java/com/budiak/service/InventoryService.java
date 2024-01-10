@@ -25,7 +25,7 @@ public class InventoryService {
      * Finds the inventory by film ID and store ID.
      *
      * @param session The Hibernate session.
-     * @param filmId The ID of the film.
+     * @param filmId  The ID of the film.
      * @param storeId The ID of the store.
      * @return The inventory matching the film ID and store ID, or null if not found.
      * @throws ServiceException If an error occurs while finding the inventory.
@@ -56,7 +56,7 @@ public class InventoryService {
      * Adds a film to the inventory.
      *
      * @param session The Hibernate session.
-     * @param film The film to be added to the inventory.
+     * @param film    The film to be added to the inventory.
      * @param storeId The ID of the store where the film will be added.
      * @throws ServiceException If an error occurs while adding the film to the inventory.
      */

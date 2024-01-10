@@ -77,79 +77,6 @@ public class Film {
         this.specialFeatures = builder.specialFeatures;
     }
 
-    public static class Builder {
-        private String title;
-        private String description;
-        private Integer releaseYear;
-        private Language language;
-        private Language originalLanguage;
-        private Byte rentalDuration = 3;
-        private BigDecimal rentalRate = new BigDecimal("4.99");
-        private Short length;
-        private BigDecimal replacementCost = new BigDecimal("19.99");;
-        private Rating rating = Rating.G;
-        private Set<String> specialFeatures;
-
-        public Builder setTitle(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public Builder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder setReleaseYear(Integer releaseYear) {
-            this.releaseYear = releaseYear;
-            return this;
-        }
-
-        public Builder setLanguage(Language language) {
-            this.language = language;
-            return this;
-        }
-
-        public Builder setOriginalLanguage(Language originalLanguage) {
-            this.originalLanguage = originalLanguage;
-            return this;
-        }
-
-        public Builder setRentalDuration(Byte rentalDuration) {
-            this.rentalDuration = rentalDuration;
-            return this;
-        }
-
-        public Builder setRentalRate(BigDecimal rentalRate) {
-            this.rentalRate = rentalRate;
-            return this;
-        }
-
-        public Builder setLength(Short length) {
-            this.length = length;
-            return this;
-        }
-
-        public Builder setReplacementCost(BigDecimal replacementCost) {
-            this.replacementCost = replacementCost;
-            return this;
-        }
-
-        public Builder setRating(Rating rating) {
-            this.rating = rating;
-            return this;
-        }
-
-        public Builder setSpecialFeatures(Set<String> specialFeatures) {
-            this.specialFeatures = specialFeatures;
-            return this;
-        }
-
-        public Film build() {
-            return new Film(this);
-        }
-    }
-
     public BigDecimal getRentalRate() {
         if (rentalRate == null) {
             rentalRate = new BigDecimal("4.99");
@@ -172,12 +99,12 @@ public class Film {
         this.replacementCost = replacementCost;
     }
 
-    public void setFilmId(Short filmId) {
-        this.filmId = filmId;
-    }
-
     public Short getFilmId() {
         return filmId;
+    }
+
+    public void setFilmId(Short filmId) {
+        this.filmId = filmId;
     }
 
     public String getTitle() {
@@ -258,5 +185,78 @@ public class Film {
 
     public enum Rating {
         G, PG, PG_13, R, NC_17
+    }
+
+    public static class Builder {
+        private String title;
+        private String description;
+        private Integer releaseYear;
+        private Language language;
+        private Language originalLanguage;
+        private Byte rentalDuration = 3;
+        private BigDecimal rentalRate = new BigDecimal("4.99");
+        private Short length;
+        private BigDecimal replacementCost = new BigDecimal("19.99");
+        private Rating rating = Rating.G;
+        private Set<String> specialFeatures;
+
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setReleaseYear(Integer releaseYear) {
+            this.releaseYear = releaseYear;
+            return this;
+        }
+
+        public Builder setLanguage(Language language) {
+            this.language = language;
+            return this;
+        }
+
+        public Builder setOriginalLanguage(Language originalLanguage) {
+            this.originalLanguage = originalLanguage;
+            return this;
+        }
+
+        public Builder setRentalDuration(Byte rentalDuration) {
+            this.rentalDuration = rentalDuration;
+            return this;
+        }
+
+        public Builder setRentalRate(BigDecimal rentalRate) {
+            this.rentalRate = rentalRate;
+            return this;
+        }
+
+        public Builder setLength(Short length) {
+            this.length = length;
+            return this;
+        }
+
+        public Builder setReplacementCost(BigDecimal replacementCost) {
+            this.replacementCost = replacementCost;
+            return this;
+        }
+
+        public Builder setRating(Rating rating) {
+            this.rating = rating;
+            return this;
+        }
+
+        public Builder setSpecialFeatures(Set<String> specialFeatures) {
+            this.specialFeatures = specialFeatures;
+            return this;
+        }
+
+        public Film build() {
+            return new Film(this);
+        }
     }
 }

@@ -55,49 +55,6 @@ public class Customer {
         this.active = builder.active;
     }
 
-    public static class Builder {
-        private Store store;
-        private String firstName;
-        private String lastName;
-        private String email;
-        private Address address;
-        private Boolean active;
-
-        public Builder setStore(Store store) {
-            this.store = store;
-            return this;
-        }
-
-        public Builder setFirstName(String firstName) {
-            this.firstName = firstName;
-            return this;
-        }
-
-        public Builder setLastName(String lastName) {
-            this.lastName = lastName;
-            return this;
-        }
-
-        public Builder setEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder setAddress(Address address) {
-            this.address = address;
-            return this;
-        }
-
-        public Builder setActive(Boolean active) {
-            this.active = active;
-            return this;
-        }
-
-        public Customer build() {
-            return new Customer(this);
-        }
-    }
-
     public Short getCustomerId() {
         return customerId;
     }
@@ -156,5 +113,48 @@ public class Customer {
 
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
+    }
+
+    public static class Builder {
+        private Store store;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private Address address;
+        private Boolean active;
+
+        public Builder setStore(Store store) {
+            this.store = store;
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder setActive(Boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Customer build() {
+            return new Customer(this);
+        }
     }
 }

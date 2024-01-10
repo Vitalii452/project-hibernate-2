@@ -27,8 +27,8 @@ public class CustomerService {
     /**
      * Create a customer within a transaction.
      *
-     * @param session   the Hibernate session
-     * @param customer  the customer to be created
+     * @param session  the Hibernate session
+     * @param customer the customer to be created
      * @throws ServiceException if an error occurs during the customer creation process
      */
     public void createCustomerInTransaction(Session session, Customer customer) {
@@ -36,7 +36,7 @@ public class CustomerService {
 
         try {
             TransactionUtils.executeInTransaction(session, () -> {
-                Address address = addressService.findOrCreateAddress(session,customer.getAddress());
+                Address address = addressService.findOrCreateAddress(session, customer.getAddress());
                 customer.setAddress(address);
 
                 Customer existingCustomer = customerDAO.findMatchingCustomer(session, customer);

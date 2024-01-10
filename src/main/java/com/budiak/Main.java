@@ -101,11 +101,11 @@ public class Main {
     /**
      * Creates a new customer by associating it with a store. The customer is saved in the database within a transaction.
      *
-     * @param sessionFactory The Hibernate session factory.
-     * @param storeService The service for accessing and manipulating store data.
+     * @param sessionFactory  The Hibernate session factory.
+     * @param storeService    The service for accessing and manipulating store data.
      * @param customerService The service for creating and retrieving customer data.
-     * @param customer The customer object to be created.
-     * @param storeId The ID of the store to associate the customer with.
+     * @param customer        The customer object to be created.
+     * @param storeId         The ID of the store to associate the customer with.
      */
     public void createCustomer(SessionFactory sessionFactory, StoreService storeService, CustomerService customerService, Customer customer, Byte storeId) {
         LOGGER.info("----Start of the createCustomer method----");
@@ -121,11 +121,11 @@ public class Main {
     /**
      * Processes a rental return in a transaction.
      *
-     * @param sessionFactory   The Hibernate session factory.
-     * @param rentalService    The rental service.
-     * @param firstName        The first name of the customer.
-     * @param lastName         The last name of the customer.
-     * @param email            The email address of the customer.
+     * @param sessionFactory The Hibernate session factory.
+     * @param rentalService  The rental service.
+     * @param firstName      The first name of the customer.
+     * @param lastName       The last name of the customer.
+     * @param email          The email address of the customer.
      */
     public void returnRental(SessionFactory sessionFactory, RentalService rentalService, String firstName, String lastName, String email) {
         LOGGER.info("----Start of the returnRental method----");
@@ -139,15 +139,15 @@ public class Main {
      * Creates a new rental in transaction.
      *
      * @param sessionFactory The Hibernate session factory.
-     * @param rentalService The rental service.
-     * @param firstName The first name of the customer.
-     * @param lastName The last name of the customer.
-     * @param email The email address of the customer.
-     * @param filmTitle The title of the film.
-     * @param filmYear The year of the film.
-     * @param storeId The ID of the store where the rental takes place.
-     * @param staffId The ID of the staff handling the rental.
-     * @param amount The payment amount for the rental.
+     * @param rentalService  The rental service.
+     * @param firstName      The first name of the customer.
+     * @param lastName       The last name of the customer.
+     * @param email          The email address of the customer.
+     * @param filmTitle      The title of the film.
+     * @param filmYear       The year of the film.
+     * @param storeId        The ID of the store where the rental takes place.
+     * @param staffId        The ID of the staff handling the rental.
+     * @param amount         The payment amount for the rental.
      */
     public void createRental(SessionFactory sessionFactory, RentalService rentalService, String firstName, String lastName, String email, String filmTitle, int filmYear, byte storeId, byte staffId, BigDecimal amount) {
         LOGGER.info("----Start of the processRental method----");
@@ -160,15 +160,15 @@ public class Main {
     /**
      * Adds a new film and makes it available for rental.
      *
-     * @param sessionFactory The Hibernate session factory.
-     * @param film The film object to be added.
+     * @param sessionFactory        The Hibernate session factory.
+     * @param film                  The film object to be added.
      * @param filmManagementService The service for managing film data.
-     * @param languageService The service for managing language data.
-     * @param inventoryService The service for managing inventory data.
-     * @param actors The list of actors associated with the film.
-     * @param categories The list of categories associated with the film.
-     * @param description The description of the film.
-     * @param storeId The ID of the store where the film will be available for rental.
+     * @param languageService       The service for managing language data.
+     * @param inventoryService      The service for managing inventory data.
+     * @param actors                The list of actors associated with the film.
+     * @param categories            The list of categories associated with the film.
+     * @param description           The description of the film.
+     * @param storeId               The ID of the store where the film will be available for rental.
      */
     public void addNewFilmAndMakeAvailableForRental(SessionFactory sessionFactory, Film film,
                                                     FilmManagementService filmManagementService, LanguageService languageService,
@@ -196,14 +196,14 @@ public class Main {
      * with the film itself in a database session. This method is private and called internally
      * within the class.
      *
-     * @param session                The current Hibernate session.
-     * @param filmManagementService  The service for managing film data.
-     * @param inventoryService       The service for managing inventory data.
-     * @param actors                 The list of actors associated with the film.
-     * @param categories             The list of categories associated with the film.
-     * @param description            The description of the film.
-     * @param film                   The film object to be associated with various elements.
-     * @param storeId                The ID of the store where the film will be available for rental.
+     * @param session               The current Hibernate session.
+     * @param filmManagementService The service for managing film data.
+     * @param inventoryService      The service for managing inventory data.
+     * @param actors                The list of actors associated with the film.
+     * @param categories            The list of categories associated with the film.
+     * @param description           The description of the film.
+     * @param film                  The film object to be associated with various elements.
+     * @param storeId               The ID of the store where the film will be available for rental.
      */
     private void associateFilmElements(Session session, FilmManagementService filmManagementService,
                                        InventoryService inventoryService, List<Actor> actors, List<Category> categories,

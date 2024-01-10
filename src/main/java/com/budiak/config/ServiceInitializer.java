@@ -2,8 +2,6 @@ package com.budiak.config;
 
 import com.budiak.dao.*;
 import com.budiak.service.*;
-import com.budiak.util.HibernateUtil;
-import org.hibernate.SessionFactory;
 
 public class ServiceInitializer {
 

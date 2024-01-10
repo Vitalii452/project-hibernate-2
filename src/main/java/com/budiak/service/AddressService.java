@@ -25,7 +25,7 @@ public class AddressService {
      * If the given address already exists in the database, it returns the existing address.
      * If the given address does not exist in the database, it creates a new address and returns it.
      *
-     * @param session The Hibernate session to use for the operations.
+     * @param session    The Hibernate session to use for the operations.
      * @param newAddress The new address to find or create.
      * @return The existing or newly created address.
      */

@@ -22,7 +22,7 @@ public class LanguageService {
     /**
      * Finds a Language object in the database based on the language name.
      *
-     * @param session the Hibernate session object.
+     * @param session      the Hibernate session object.
      * @param languageName the name of the language to search for.
      * @return the Language object if found, or null if not found.
      * @throws ServiceException if there are multiple languages found for the given name, or if there is an error finding the language.

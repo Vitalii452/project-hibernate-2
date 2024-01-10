@@ -20,8 +20,8 @@ public class PaymentService {
     /**
      * Makes a payment using the provided session and payment information.
      *
-     * @param session  the Hibernate session used for the transaction
-     * @param payment  the payment object containing payment details
+     * @param session the Hibernate session used for the transaction
+     * @param payment the payment object containing payment details
      * @throws ServiceException if the payment cannot be made
      */
     public void makePayment(Session session, Payment payment) {

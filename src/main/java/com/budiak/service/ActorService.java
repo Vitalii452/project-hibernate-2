@@ -22,13 +22,13 @@ public class ActorService {
     /**
      * Finds an actor by their first name and last name.
      *
-     * @param session the Hibernate session to use for the database transaction
+     * @param session   the Hibernate session to use for the database transaction
      * @param firstName the first name of the actor to find
-     * @param lastName the last name of the actor to find
+     * @param lastName  the last name of the actor to find
      * @return the Actor object representing the actor with the specified first name and last name,
-     *         or null if no actor is found with the specified details
+     * or null if no actor is found with the specified details
      * @throws ServiceException if multiple actors are found with the specified details
-     *         or if there is an error finding the actor
+     *                          or if there is an error finding the actor
      */
     public Actor findActorByDetails(Session session, String firstName, String lastName) {
         HibernateUtil.validateSession(session);
