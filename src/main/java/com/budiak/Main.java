@@ -2,7 +2,6 @@ package com.budiak;
 
 import com.budiak.config.ServiceInitializer;
 import com.budiak.config.Services;
-import com.budiak.dao.*;
 import com.budiak.model.*;
 import com.budiak.service.*;
 import com.budiak.util.HibernateUtil;
@@ -116,7 +115,7 @@ public class Main {
     public void createRental(SessionFactory sessionFactory, RentalService rentalService, String firstName, String lastName, String email, String filmTitle, int filmYear, byte storeId, byte staffId, BigDecimal amount) {
         LOGGER.info("----Start of the processRental method----");
         try (Session session = sessionFactory.openSession()) {
-            rentalService.processRentalAndPaymentTransaction(session, firstName, lastName, email, filmTitle, filmYear, storeId, staffId, amount);
+            rentalService.processRentalInTransaction(session, firstName, lastName, email, filmTitle, filmYear, storeId, staffId, amount);
         }
         LOGGER.info("----End of the processRental method----");
     }

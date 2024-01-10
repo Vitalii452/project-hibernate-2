@@ -18,6 +18,14 @@ public class CategoryService {
         this.categoryDAO = categoryDAO;
     }
 
+    /**
+     * Finds a category by its name.
+     *
+     * @param session The session to perform the database operations.
+     * @param categoryName The name of the category to search for.
+     * @return The category with the specified name if found, null if no category is found with the given name.
+     * @throws ServiceException If an error occurs while finding the category.
+     */
     public Category findCategoryByName(Session session, String categoryName) {
         HibernateUtil.validateSession(session);
 

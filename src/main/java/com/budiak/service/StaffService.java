@@ -17,6 +17,14 @@ public class StaffService {
         this.staffDAO = staffDAO;
     }
 
+    /**
+     * Finds a staff member by their unique ID.
+     *
+     * @param session the Hibernate session to use for the operation
+     * @param staffId the ID of the staff member to search for
+     * @return the Staff object representing the found staff member, or null if no staff member was found
+     * @throws ServiceException if an error occurs while finding the staff member
+     */
     public Staff findStaffById(Session session, byte staffId) {
         HibernateUtil.validateSession(session);
 

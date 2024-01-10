@@ -21,7 +21,16 @@ public class InventoryService {
         this.storeService = storeService;
     }
 
-    public Inventory findAvailableInventoryByDetails(Session session, short filmId, byte storeId) {
+    /**
+     * Finds the inventory by film ID and store ID.
+     *
+     * @param session The Hibernate session.
+     * @param filmId The ID of the film.
+     * @param storeId The ID of the store.
+     * @return The inventory matching the film ID and store ID, or null if not found.
+     * @throws ServiceException If an error occurs while finding the inventory.
+     */
+    public Inventory findInventoryByFilmAndStore(Session session, short filmId, byte storeId) {
         HibernateUtil.validateSession(session);
 
         LOGGER.debug("Attempting to find inventory with filmId {} and storeId {}", filmId, storeId);
@@ -43,6 +52,14 @@ public class InventoryService {
         }
     }
 
+    /**
+     * Adds a film to the inventory.
+     *
+     * @param session The Hibernate session.
+     * @param film The film to be added to the inventory.
+     * @param storeId The ID of the store where the film will be added.
+     * @throws ServiceException If an error occurs while adding the film to the inventory.
+     */
     public void addFilmToInventory(Session session, Film film, Byte storeId) {
         HibernateUtil.validateSessionAndTransaction(session);
 

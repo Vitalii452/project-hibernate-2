@@ -24,6 +24,13 @@ public class CustomerService {
         this.addressService = addressService;
     }
 
+    /**
+     * Create a customer within a transaction.
+     *
+     * @param session   the Hibernate session
+     * @param customer  the customer to be created
+     * @throws ServiceException if an error occurs during the customer creation process
+     */
     public void createCustomerInTransaction(Session session, Customer customer) {
         HibernateUtil.validateSession(session);
 

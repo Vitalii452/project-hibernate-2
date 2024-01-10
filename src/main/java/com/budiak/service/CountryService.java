@@ -17,34 +17,45 @@ public class CountryService {
         this.countryDAO = countryDAO;
     }
 
-    public Country findOrCreateCountry(Session session, Country country) {
+    /**
+     * Finds or creates a country in the database.
+     * If the given country already exists in the database, it returns the existing country.
+     * If the given country does not exist in the database, it creates a new country and returns it.
+     *
+     * @param session    The Hibernate session to use for the operations.
+     * @param newCountry The new country to find or create.
+     * @return The existing or newly created country.
+     */
+    public Country findOrCreateCountry(Session session, Country newCountry) {
         HibernateUtil.validateSessionAndTransaction(session);
+        LOGGER.debug("Attempting to find or create a country: {}", newCountry.getCountryName());
 
-        LOGGER.debug("Attempting to find or create a country: {}", country.getCountryName());
+        Country existingCountry = findExistingCountry(session, newCountry);
+        if (existingCountry == null) {
+            return saveCountry(session, newCountry);
+        } else {
+            LOGGER.debug("Country already exists in the database: {}", existingCountry.getCountryName());
+            return existingCountry;
+        }
+    }
 
-        Country newCountry = new Country(country.getCountryName());
-        Country existingCountry = null;
+    private Country findExistingCountry(Session session, Country country) {
         try {
-            existingCountry = countryDAO.findMatchingCountry(session, newCountry);
-
+            return countryDAO.findMatchingCountry(session, country);
         } catch (Exception e) {
             LOGGER.error("Error finding country", e);
             throw new ServiceException("Error finding country", e);
         }
+    }
 
-        if (existingCountry == null) {
-            try {
-                LOGGER.info("Creating a new country in the database: {}", country.getCountryName());
-                countryDAO.save(session, newCountry);
-
-            } catch (Exception e) {
-                LOGGER.error("Error saving country: {}", e.getMessage(), e);
-                throw new ServiceException("Error saving country", e);
-            }
+    private Country saveCountry(Session session, Country newCountry) {
+        try {
+            LOGGER.info("Creating a new country in the database");
+            countryDAO.save(session, newCountry);
             return newCountry;
+        } catch (Exception e) {
+            LOGGER.error("Error saving country: {}", e.getMessage(), e);
+            throw new ServiceException("Error saving country", e);
         }
-
-        LOGGER.info("Country found in the database: {}", country.getCountryName());
-        return existingCountry;
     }
 }

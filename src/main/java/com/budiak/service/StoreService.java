@@ -17,6 +17,14 @@ public class StoreService {
         this.storeDAO = storeDAO;
     }
 
+    /**
+     * Finds a store by ID.
+     *
+     * @param session The Hibernate session.
+     * @param id The ID of the store to find.
+     * @return The store matching the specified ID, or null if not found.
+     * @throws ServiceException If an error occurs while finding the store.
+     */
     public Store findStoreById(Session session, Byte id) {
         HibernateUtil.validateSession(session);
 

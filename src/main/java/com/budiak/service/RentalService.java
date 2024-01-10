@@ -31,6 +31,15 @@ public class RentalService {
         this.paymentService = paymentService;
     }
 
+    /**
+     * Processes a rental return in a transaction.
+     *
+     * @param session   the Hibernate session
+     * @param firstName the first name of the customer
+     * @param lastName  the last name of the customer
+     * @param email     the email address of the customer
+     * @throws ServiceException if an unexpected error occurs during the rental return process
+     */
     public void returnRentalInTransaction(Session session, String firstName, String lastName, String email) {
         HibernateUtil.validateSession(session);
 
@@ -64,8 +73,22 @@ public class RentalService {
         }
     }
 
-    public void processRentalAndPaymentTransaction(Session session, String firstName, String lastName, String email,
-                                                   String filmTitle, int filmYear, byte storeId, byte staffId, BigDecimal amount) {
+    /**
+     * Processes a new rental in transaction.
+     *
+     * @param session      the Hibernate session
+     * @param firstName    the first name of the customer
+     * @param lastName     the last name of the customer
+     * @param email        the email address of the customer
+     * @param filmTitle    the title of the film
+     * @param filmYear     the year of the film
+     * @param storeId      the ID of the store where the rental takes place
+     * @param staffId      the ID of the staff handling the rental
+     * @param amount       the payment amount for the rental
+     * @throws ServiceException if an unexpected error occurs during the rental process
+     */
+    public void processRentalInTransaction(Session session, String firstName, String lastName, String email,
+                                           String filmTitle, int filmYear, byte storeId, byte staffId, BigDecimal amount) {
         HibernateUtil.validateSession(session);
 
         try {
@@ -74,7 +97,7 @@ public class RentalService {
                 Film film = filmManagementService.findFilmByTitleAndYear(session, filmTitle, filmYear);
                 Staff staff = staffService.findStaffById(session, staffId);
 
-                Inventory inventory = inventoryService.findAvailableInventoryByDetails(session, film.getFilmId(), storeId);
+                Inventory inventory = inventoryService.findInventoryByFilmAndStore(session, film.getFilmId(), storeId);
                 Rental rental = createRental(inventory, customer, staff);
                 rentalDAO.save(session, rental);
 
